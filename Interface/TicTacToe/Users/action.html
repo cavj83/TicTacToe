@@ -26,6 +26,7 @@
     </main>
 </body>
 <script>
+
 let boxes = document.querySelectorAll(".box");
 const KEYCODE = {
     Left:37,
@@ -62,7 +63,7 @@ var numberOfPlays = 0;
 
 
 var init = function () {
-    console.log('init() called');
+    //console.log('init() called');
     boxes.forEach(e=>{
         e.innerHTML = "";
         e.style.color = "#fff";
@@ -143,7 +144,6 @@ function drawBoard(){
     }
 }
 function compareVictory(){
-    console.log(victoryPossible());
     if(!victoryPossible()){
         return;
     }
@@ -163,7 +163,6 @@ function compareVictory(){
         if(gameBoardCells[x]!="" && gameBoardCells[z]!=""){
             if(gameBoardCells[x]==gameBoardCells[y] 
             && gameBoardCells[y]==gameBoardCells[z]){
-                //console.log(x,y,z);
                 PLAYER_WON = gameBoardCells[z];
                 return gameWon([x,y,z]);
             } 
@@ -183,7 +182,6 @@ function compareVictory(){
     }
 }
 function victoryPossible(){
-    console.log(numberOfPlays);
     return numberOfPlays >= NUMBER_OF_PLAYS_TO_WIN;
 }
 function notEmptyCell(cell){
@@ -205,4 +203,5 @@ document.querySelector("#play-again").addEventListener("click",()=>{
 document.querySelector("#back").addEventListener("click",()=>{
     window.location.assign("../../../index.html");
 })
+
 </script>

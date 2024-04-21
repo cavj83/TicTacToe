@@ -1,5 +1,4 @@
 
-let boxes = document.querySelectorAll(".box");
 const KEYCODE = {
     Left:37,
     Up:38,
@@ -15,7 +14,6 @@ const DOWN_MOVEMENT = 3;
 const MAX_LIMIT = 8;
 const MIN_LIMIT = 0;
 const NUMBER_OF_PLAYS_TO_WIN = 5;
-
 const VICTORY_SCENARIOS = [
     [0,1,2],
     [3,4,5],
@@ -26,21 +24,17 @@ const VICTORY_SCENARIOS = [
     [0,4,8],
     [2,4,6]
 ];
-var PLAYER_WON = "";
+
 var currentPosition = 0;
 var gameContinues = true;
 var gameBoardCells = ["","","","","","","","",""];
 var playerInturn = "X";
-var numberOfPlays = 0;
+var numberOfPlays = 5;
 
 
 var init = function () {
-    //console.log('init() called');
-    boxes.forEach(e=>{
-        e.innerHTML = "";
-        e.style.color = "#fff";
-        e.classList.remove("focus");
-    })
+    console.log('init() called');
+ 
     document.addEventListener('keydown', function(e) {
     	switch(e.keyCode){
     	case KEYCODE.Left: 
@@ -67,15 +61,14 @@ var init = function () {
     	}
     });
 };
-//window.onload = init;
+
+window.onload = init;
+
 function move(movement){
-    if(!PLAYER_WON){
-        var newPosition = currentPosition + movement;
-        if(isMoveValid(newPosition)){
-            changecellFocused(newPosition);
-        }
+    var newPosition = currentPosition + movement;
+    if(isMoveValid(newPosition)){
+        changecellFocused(newPosition);
     }
-    
 }
 
 function isMoveValid(newPosition){
@@ -88,7 +81,6 @@ function changecellFocused(newPosition){
     currentPosition = newPosition;
 }
 function enterPressed(){
-    numberOfPlays++;
     if(gameContinues){
         if(isFocusCellEmpty()){
             playTurn();
@@ -109,11 +101,6 @@ function playTurn(){
 function drawBoard(){
     document.getElementById("cell-"+currentPosition).innerHTML = playerInturn;
     playerInturn = (playerInturn == "X" ? "0" : "X");
-    if(playerInturn == "X"){
-        document.querySelector(".bg").style.left = "0";
-    }else{
-        document.querySelector(".bg").style.left = "85px";
-    }
 }
 function compareVictory(){
     if(!victoryPossible()){
@@ -128,30 +115,25 @@ function compareVictory(){
     }
     */
    //Método de 2 evaluaciones por ciclo.
-    for(var i=0;i<4;i++){
-        var x = i;  //[0,1,2,3]
-        var y = 4;  //[4]
-        var z = 8-i;//[8,7,6,5]
-        if(gameBoardCells[x]!="" && gameBoardCells[z]!=""){
-            if(gameBoardCells[x]==gameBoardCells[y] 
-            && gameBoardCells[y]==gameBoardCells[z]){
-                PLAYER_WON = gameBoardCells[z];
-                return gameWon([x,y,z]);
-            } 
-        }
-
-        var z = 1 + (2 * i);  //[1,3,5,7]
-        var x = (z<4)?0:8;  //[0,8]
-        var y = (2*z)-x;    //[2,6]
-        if(gameBoardCells[x] != "" && gameBoardCells[y] != "" && gameBoardCells[z] != ""){
-            if(gameBoardCells[x] == gameBoardCells[z] 
-            && gameBoardCells[z] == gameBoardCells[y]){
-                PLAYER_WON = gameBoardCells[z];
-                return gameWon([x,y,z]);
+   if(gameBoardCells[4]!=""){
+        for(var i=0;i<4;i++){
+            var x = i;  //[0,1,2,3]
+            var y = 4;  //[4]
+            var z = 8-i;//[8,7,6,5]
+            if(gameBoardCells[x]!="" && gameBoardCells[z]!=""){
+                if(gameBoardCells[x]==gameBoardCells[y] 
+                && gameBoardCells[y]==gameBoardCells[z]) return gameWon(gameBoardCells[y]);
             }
-                
+
+            var z = 1 + (2 * i);  //[1,3,5,7]
+            var x = (z<4)?0:8;  //[0,8]
+            var y = (2*z)-x;    //[2,6]
+            if(gameBoardCells[x] != "" && gameBoardCells[y] != "" && gameBoardCells[z] != ""){
+                if(gameBoardCells[x] == gameBoardCells[z] 
+                && gameBoardCells[z] == gameBoardCells[y]) return gameWon(gameBoardCells[z]);
+            }
         }
-    }
+   }
 }
 function victoryPossible(){
     return numberOfPlays >= NUMBER_OF_PLAYS_TO_WIN;
@@ -163,15 +145,7 @@ function areCellsEquals(victoryScenario){
     return (gameBoardCells[victoryScenario[0]]== gameBoardCells[victoryScenario[1]]
         && gameBoardCells[victoryScenario[0]]== gameBoardCells[victoryScenario[2]]);
 }
-function gameWon(row){
-    alert("Ganador [ "+PLAYER_WON+" ]!");
-    for(indice=0;indice<3;indice++){
-        document.getElementById("cell-"+row[indice]).classList.add("focus");
-    }
-}
-document.querySelector("#play-again").addEventListener("click",()=>{
-    location.reload();
-})
-document.querySelector("#back").addEventListener("click",()=>{
+function gameWon(user){
+    alert("Ganador [ "+user+" ]!");
     window.location.assign("../../../index.html");
-})
+}

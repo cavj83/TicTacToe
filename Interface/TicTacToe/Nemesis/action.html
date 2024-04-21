@@ -1,4 +1,31 @@
-
+<link rel="stylesheet" href="gatostyle.css">
+<script src="../../../libs/easyui/jquery.min.js" type="text/javascript"></script>
+<body onload="init();">
+    
+    <main>
+    <div class="turn-container">
+        <h3>Turno</h3>
+        <div class="turn-box align">X</div>
+        <div class="turn-box aling">O</div>
+        <div class="bg"></div>
+    </div>
+    <div class="main-grid">
+        <div id="cell-0" class="box align">1</div>
+        <div id="cell-1" class="box align">2</div>
+        <div id="cell-2" class="box align">3</div>
+        <div id="cell-3" class="box align">4</div>
+        <div id="cell-4" class="box align">5</div>
+        <div id="cell-5" class="box align">6</div>
+        <div id="cell-6" class="box align">7</div>
+        <div id="cell-7" class="box align">8</div>
+        <div id="cell-8" class="box align">9</div>
+    </div>
+    
+    <button id="play-again">Nuevo</button>
+    <button id="back">Regresar</button>
+    </main>
+</body>
+<script>
 let boxes = document.querySelectorAll(".box");
 const KEYCODE = {
     Left:37,
@@ -25,6 +52,11 @@ const VICTORY_SCENARIOS = [
     [2,5,8],
     [0,4,8],
     [2,4,6]
+];
+const board = [
+    [0,1,2],
+    [3,4,5],
+    [6,7,8]
 ];
 var PLAYER_WON = "";
 var currentPosition = 0;
@@ -96,6 +128,7 @@ function enterPressed(){
         }else{
             compareVictory();
         }
+        nextTurn();
     }
 }
 function isFocusCellEmpty(){
@@ -175,3 +208,26 @@ document.querySelector("#play-again").addEventListener("click",()=>{
 document.querySelector("#back").addEventListener("click",()=>{
     window.location.assign("../../../index.html");
 })
+function nextTurn(){
+	//AI to make its turn
+	let avialable = [];
+	for(let i = 0; i<3;i++){
+		for(let j = 0; j<3;j++){
+            indice = board[i][j];
+			if(gameBoardCells[indice] == ""){
+				avialable.push({i,j});
+			}
+		}
+	}
+    if(avialable.length>0){
+        let move= avialable[Math.random() * avialable.length | 0]
+        //console.log(board[move.i][move.j]);
+        currentPosition = board[move.i][move.j];
+        drawBoard();
+        //gameBoardCells[currentPosition] = playerInturn;
+        //document.getElementById("cell-"+currentPosition).innerHTML = playerInturn;
+        //playerInturn = (playerInturn == "X" ? "0" : "X");
+        //console.log(gameBoardCells);
+    }
+};
+</script>
