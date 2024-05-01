@@ -1,151 +1,215 @@
+const selection = document.querySelector('.selection');
+const playBoard = document.querySelector('.play-board');
+const winner = document.querySelector('.winner');
 
-const KEYCODE = {
-    Left:37,
-    Up:38,
-    Right:39,
-    Down: 40,
-    Enter: 13,
-    Return: 10009
-};
-const LEFT_MOVEMENT = -1;
-const RIGHT_MOVEMENT = 1;
-const UP_MOVEMENT = -3;
-const DOWN_MOVEMENT = 3;
-const MAX_LIMIT = 8;
-const MIN_LIMIT = 0;
-const NUMBER_OF_PLAYS_TO_WIN = 5;
-const VICTORY_SCENARIOS = [
-    [0,1,2],
-    [3,4,5],
-    [6,7,8],
-    [0,3,6],
-    [1,4,7],
-    [2,5,8],
-    [0,4,8],
-    [2,4,6]
-];
+let gameBoard, user = 'X', computer = 'O';
+const cells = document.querySelectorAll('.cell');
+const winCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [6, 4, 2], [2, 5, 8], [1, 4, 7], [0, 3, 6]];
 
-var currentPosition = 0;
-var gameContinues = true;
-var gameBoardCells = ["","","","","","","","",""];
-var playerInturn = "X";
-var numberOfPlays = 5;
+const playerSelect = player => {
 
+    user = player;
+    computer = (player === 'X') ? 'O' : 'X';
 
-var init = function () {
-    console.log('init() called');
- 
-    document.addEventListener('keydown', function(e) {
-    	switch(e.keyCode){
-    	case KEYCODE.Left: 
-            move(LEFT_MOVEMENT);
-    		break;
-    	case KEYCODE.Up:
-            move(UP_MOVEMENT);
-    		break;
-    	case KEYCODE.Right:
-            move(RIGHT_MOVEMENT);
-    		break;
-    	case KEYCODE.Down:
-            move(DOWN_MOVEMENT);
-    		break;
-    	case KEYCODE.Enter:
-            enterPressed();
-    		break;
-    	case KEYCODE.Return:
-		    tizen.application.getCurrentApplication().exit();
-    		break;
-    	default:
-    		console.log('Key code : ' + e.keyCode);
-    		break;
-    	}
-    });
-};
+    gameBoard = Array.from(Array(9).keys());
 
-window.onload = init;
-
-function move(movement){
-    var newPosition = currentPosition + movement;
-    if(isMoveValid(newPosition)){
-        changecellFocused(newPosition);
+    for (let cell of cells) {
+        cell.addEventListener('click', handleClick, false);
     }
-}
 
-function isMoveValid(newPosition){
-    return (MIN_LIMIT <=newPosition && newPosition <= MAX_LIMIT);
-}
-
-function changecellFocused(newPosition){
-    document.getElementById("cell-"+currentPosition).classList.remove("focus");
-    document.getElementById("cell-"+newPosition).classList.add("focus");
-    currentPosition = newPosition;
-}
-function enterPressed(){
-    if(gameContinues){
-        if(isFocusCellEmpty()){
-            playTurn();
-            compareVictory();
-        }else{
-            compareVictory();
-        }
+    if (computer === 'X') {
+        turn(bestSpot(), computer);
     }
-}
-function isFocusCellEmpty(){
-    return gameBoardCells[currentPosition] == "";
+
+    selection.classList.add('fadeOut');
+    setTimeout(() => { selection.style.display = 'none' }, 290);
+
+    playBoard.classList.add('fadeIn');
+    setTimeout(() => { playBoard.style.display = 'block' }, 290);
+
 }
 
-function playTurn(){
-    gameBoardCells[currentPosition] = playerInturn;
-    drawBoard();
-}
-function drawBoard(){
-    document.getElementById("cell-"+currentPosition).innerHTML = playerInturn;
-    playerInturn = (playerInturn == "X" ? "0" : "X");
-}
-function compareVictory(){
-    if(!victoryPossible()){
-        return;
-    }
-    /* //Método de Fuerza Bruta
-    for (let idVictoryScenadiro = 0; idVictoryScenadiro < VICTORY_SCENARIOS.length; idVictoryScenadiro++) {
-        const victoryScenario = VICTORY_SCENARIOS[idVictoryScenadiro];
-        if(notEmptyCell(gameBoardCells[victoryScenario[0]]) && areCellsEquals(victoryScenario)){
-            gameWon();
-        }
-    }
-    */
-   //Método de 2 evaluaciones por ciclo.
-   if(gameBoardCells[4]!=""){
-        for(var i=0;i<4;i++){
-            var x = i;  //[0,1,2,3]
-            var y = 4;  //[4]
-            var z = 8-i;//[8,7,6,5]
-            if(gameBoardCells[x]!="" && gameBoardCells[z]!=""){
-                if(gameBoardCells[x]==gameBoardCells[y] 
-                && gameBoardCells[y]==gameBoardCells[z]) return gameWon(gameBoardCells[y]);
-            }
+const startGame = () => {
 
-            var z = 1 + (2 * i);  //[1,3,5,7]
-            var x = (z<4)?0:8;  //[0,8]
-            var y = (2*z)-x;    //[2,6]
-            if(gameBoardCells[x] != "" && gameBoardCells[y] != "" && gameBoardCells[z] != ""){
-                if(gameBoardCells[x] == gameBoardCells[z] 
-                && gameBoardCells[z] == gameBoardCells[y]) return gameWon(gameBoardCells[z]);
-            }
-        }
-   }
+    winner.classList.remove('fadeIn');
+    winner.classList.add('fadeOut');
+    setTimeout(() => { winner.style.display = 'none' }, 290);
+
+    playBoard.classList.remove('fadeIn');
+    playBoard.classList.add('fadeOut');
+    setTimeout(() => { playBoard.style.display = 'none' }, 290);
+
+    selection.classList.add('fadeIn');
+    setTimeout(() => { selection.style.display = 'block' }, 290);
+
+    for (let cell of cells) {
+        cell.innerHTML = '';
+        cell.style.color = '#000';
+        cell.style.background = '#ff9eb150';
+    }
+
 }
-function victoryPossible(){
-    return numberOfPlays >= NUMBER_OF_PLAYS_TO_WIN;
-}
-function notEmptyCell(cell){
-    return cell != "";
-}
-function areCellsEquals(victoryScenario){
-    return (gameBoardCells[victoryScenario[0]]== gameBoardCells[victoryScenario[1]]
-        && gameBoardCells[victoryScenario[0]]== gameBoardCells[victoryScenario[2]]);
-}
-function gameWon(user){
-    alert("Ganador [ "+user+" ]!");
+
+function home(){
     window.location.assign("../../../index.html");
+}
+
+startGame();
+
+const handleClick = gameSpace => {
+
+    if (typeof gameBoard[gameSpace.target.id] === 'number') {
+
+        turn(gameSpace.target.id, user);
+        if (!checkWin(gameBoard, user) && !checkTie()) {
+            setTimeout(() => { turn(bestSpot(), computer) }, 500);
+        }
+    }
+
+}
+
+const turn = (spaceId, player) => {
+
+    gameBoard[spaceId] = player;
+    document.getElementById(spaceId).innerHTML = player;
+
+    let gameWon = checkWin(gameBoard, player);
+    if (gameWon) {
+        gameOver(gameWon);
+    }
+
+    checkTie();
+
+}
+
+const checkWin = (board, player) => {
+
+    let spaces = board.reduce((acc, ele, idx) => (ele === player) ? acc.concat(idx) : acc, []);
+    let gameWon = null;
+
+    for (let [index, winComboSpaces] of winCombos.entries()) {
+        if(winComboSpaces.every(elem => spaces.indexOf(elem) > -1)) {
+            gameWon = { index: index, player: player };
+            break;
+        }
+    }
+
+    return gameWon;
+
+}
+
+const gameOver = gameWon => {
+    for (let index of winCombos[gameWon.index]) {
+        document.getElementById(index).style.color = '#FFF';
+        document.getElementById(index).style.backgroundColor = '#B33951';
+    }
+
+    for (let cell of cells) {
+        cell.removeEventListener('click', handleClick, false);
+    }
+
+    declareWinner(gameWon.player === user ? "Tu Ganas el Juego!" : "Nemesis Gana el Juego!");
+}
+
+const declareWinner = message => {
+    winner.querySelector('h3').innerHTML = message;
+
+    setTimeout(() => {
+
+        playBoard.classList.remove('fadeIn');
+        playBoard.classList.add('fadeOut');
+        setTimeout(() => { playBoard.style.display = 'none' }, 290);   
+
+        winner.classList.add('fadeIn');
+        setTimeout(() => { winner.style.display = 'block' }, 290);    
+         
+    }, 1500);
+}
+
+
+const bestSpot = () => {
+    return minMax(gameBoard, computer).index;
+}
+
+const emptySquares = () => {
+    return gameBoard.filter((elm, i) => i === elm);
+}
+
+const checkTie = () => {
+
+    if (emptySquares().length === 0) {
+        selection.classList.remove('fadeOut');
+
+        for (let cell of cells) {
+            cell.style.backgroundColor = "#B33951";
+            cell.removeEventListener('click', handleClick, false);
+        }
+
+        declareWinner("Empate !");
+        return true;
+    }
+
+    return false;
+
+}
+
+const minMax = (testBoard, player) => {
+
+    let openSpaces = emptySquares(testBoard);
+
+    if (checkWin(testBoard, user))
+        return { score: -10 };
+    else if (checkWin(testBoard, computer))
+        return { score: 10 };
+    else if (openSpaces.length === 0)
+        return { score: 0 };
+
+    let moves = [];
+
+    for (let i = 0; i < openSpaces.length; i++) {
+
+        let move = {};
+        move.index = testBoard[openSpaces[i]];
+        testBoard[openSpaces[i]] = player;
+
+        if (player === computer) 
+            move.score = minMax(testBoard, user).score;
+        else
+            move.score = minMax(testBoard, computer).score;
+
+        testBoard[openSpaces[i]] = move.index;
+
+        if ((player === computer && move.score === 10) || (player === user && move.score === -10))
+            return move;
+        else
+            moves.push(move)
+
+    }
+
+    let bestMove, bestScore;
+
+    if (player === computer) {
+
+        bestScore = -1000;
+        for (let i = 0; i < moves.length; i++) {
+            if (moves[i].score > bestScore) {
+                bestScore = moves[i].score;
+                bestMove = i;
+            }
+        }
+
+    } else {
+
+        bestScore = 1000;
+        for (let i = 0; i < moves.length; i++) {
+            if (moves[i].score < bestScore) {
+                bestScore = moves[i].score;
+                bestMove = i;
+            }
+        }
+
+    }
+
+    return moves[bestMove];
+
 }
