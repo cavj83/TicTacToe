@@ -1,3 +1,7 @@
+/** codigo fuente:
+ * https://github.com/hosseinnabi-ir/Tic-Tac-Toe-Game-using-JavaScript
+ */
+
 const selection = document.querySelector('.selection');
 const playBoard = document.querySelector('.play-board');
 const winner = document.querySelector('.winner');
