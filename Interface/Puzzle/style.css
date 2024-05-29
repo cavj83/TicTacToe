@@ -1,0 +1,177 @@
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  background-image: linear-gradient(#7B9F35, #226666);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.game {
+  /* position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  padding: 15px;
+  background-color: #AA3939;
+  border-radius: 5px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 80px 80px 80px 80px;
+  grid-template-rows: 79px 79px 79px 79px;
+  border: 1px solid #550000;
+}
+
+.grid button {
+  /*background-color: #cfcfcf;*/
+  color: hsl(249, 100%, 50%);
+  font-size: 23px;
+  font-weight: bold;
+  border: 1px solid #550000;
+  outline: none;
+  cursor: pointer;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* agrega un contorno de texto gris */
+}
+
+.footer {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer button {
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  width: 80px;
+  background-color: #D4EE9F;
+  color: #003333;
+  outline: none;
+  cursor: pointer;
+}
+
+.A {
+  background-color: #d44f0c;
+  background-image: url('./../../images/logo16.jpg');
+  background-repeat: no-repeat; /* evita que la imagen se repita */
+  background-size: contain; /* ajusta la imagen al tamaño del botón sin recortar */
+}
+
+.B {
+  background-color: #d44f0c;
+  background-image: url('./../../images/logo1.jpg');
+  background-repeat: no-repeat; /* evita que la imagen se repita */
+  background-size: contain; /* ajusta la imagen al tamaño del botón sin recortar */
+}
+.C {
+  background-color: #d44f0c;
+  background-image: url('./../../images/logo2.jpg');
+  background-repeat: no-repeat; /* evita que la imagen se repita */
+  background-size: contain; /* ajusta la imagen al tamaño del botón sin recortar */
+}
+.D {
+  background-color: #d44f0c;
+  background-image: url('./../../images/logo3.jpg');
+  background-repeat: no-repeat; /* evita que la imagen se repita */
+  background-size: contain; /* ajusta la imagen al tamaño del botón sin recortar */
+}
+.E {
+  background-color: #d44f0c;
+  background-image: url('./../../images/logo4.jpg');
+  background-repeat: no-repeat; /* evita que la imagen se repita */
+  background-size: contain; /* ajusta la imagen al tamaño del botón sin recortar */
+}
+.F {
+  background-color: #d44f0c;
+  background-image: url('./../../images/logo5.jpg');
+  background-repeat: no-repeat; /* evita que la imagen se repita */
+  background-size: contain; /* ajusta la imagen al tamaño del botón sin recortar */
+}
+.G {
+  background-color: #d44f0c;
+  background-image: url('./../../images/logo6.jpg');
+  background-repeat: no-repeat; /* evita que la imagen se repita */
+  background-size: contain; /* ajusta la imagen al tamaño del botón sin recortar */
+}
+.H {
+  background-color: #d44f0c;
+  background-image: url('./../../images/logo7.jpg');
+  background-repeat: no-repeat; /* evita que la imagen se repita */
+  background-size: contain; /* ajusta la imagen al tamaño del botón sin recortar */
+}
+.I {
+  background-color: #d44f0c;
+  background-image: url('./../../images/logo8.jpg');
+  background-repeat: no-repeat; /* evita que la imagen se repita */
+  background-size: contain; /* ajusta la imagen al tamaño del botón sin recortar */
+}
+.J {
+  background-color: #d44f0c;
+  background-image: url('./../../images/logo9.jpg');
+  background-repeat: no-repeat; /* evita que la imagen se repita */
+  background-size: contain; /* ajusta la imagen al tamaño del botón sin recortar */
+}
+.K {
+  background-color: #d44f0c;
+  background-image: url('./../../images/logo10.jpg');
+  background-repeat: no-repeat; /* evita que la imagen se repita */
+  background-size: contain; /* ajusta la imagen al tamaño del botón sin recortar */
+}
+.L {
+  background-color: #d44f0c;
+  background-image: url('./../../images/logo11.jpg');
+  background-repeat: no-repeat; /* evita que la imagen se repita */
+  background-size: contain; /* ajusta la imagen al tamaño del botón sin recortar */
+}
+.M {
+  background-color: #d44f0c;
+  background-image: url('./../../images/logo12.jpg');
+  background-repeat: no-repeat; /* evita que la imagen se repita */
+  background-size: contain; /* ajusta la imagen al tamaño del botón sin recortar */
+}
+.N {
+  background-color: #d44f0c;
+  background-image: url('./../../images/logo13.jpg');
+  background-repeat: no-repeat; /* evita que la imagen se repita */
+  background-size: contain; /* ajusta la imagen al tamaño del botón sin recortar */
+}
+.O {
+  background-color: #d44f0c;
+  background-image: url('./../../images/logo14.jpg');
+  background-repeat: no-repeat; /* evita que la imagen se repita */
+  background-size: contain; /* ajusta la imagen al tamaño del botón sin recortar */
+}
+.P {
+  background-color: #d44f0c;
+  background-image: url('./../../images/logo15.jpg');
+  background-repeat: no-repeat; /* evita que la imagen se repita */
+  background-size: contain; /* ajusta la imagen al tamaño del botón sin recortar */
+}
+.footer button:hover {
+  color: #D4EE9F;
+  background-color: #003333;
+}
+
+.footer span {
+  flex: 1;
+  text-align: center;
+  font-size: 20px;
+  color: #D4EE9F;
+  font-weight: bold;
+  margin: auto 0;
+}
+
+.message {
+  color:#AA3939;
+  height: 80px;
+}
