@@ -95,6 +95,22 @@ var init = function () {
     	}
     });
 };
+boxes.forEach(box => {
+  box.addEventListener('click', event => {
+    currentPosition = Array.from(boxes).indexOf(event.target);
+    if (!PLAYER_WON && gameBoardCells[currentPosition] === '') {
+      gameBoardCells[currentPosition] = playerInturn;
+      drawBoard();
+      numberOfPlays++;
+      if (gameContinues) {
+        if (isFocusCellEmpty()) {
+          playTurn();
+        }
+        compareVictory();
+      }
+    }
+  });
+});
 //window.onload = init;
 function move(movement){
     if(!PLAYER_WON){
